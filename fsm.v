@@ -1,5 +1,5 @@
 
-module fsm(iclk, in, out);
+module fsm(clk, in, out);
 
 	// inputs and outputs - NOTE: will rename in and out later
 	parameter width = 8;
