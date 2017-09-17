@@ -11,10 +11,10 @@
 
 module top(clk, reset, switch_val, count_val);
 
-	input clk, reset;
-	input [2:0] switch_val;
+	input logic clk, reset;
+	input logic [2:0] switch_val;
 	
-	output [31:0] count_val;
+	output logic [31:0] count_val;
 
 	always_comb begin
 		case(switch_val)                     // divider value
