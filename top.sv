@@ -19,15 +19,15 @@ module top(clk, reset, switch_val, clk_out);
 
 	always_comb begin
 		case(switch_val)                     // divider value
-			`Do: count_val = 32'd10;        //  32'hBAB9;        // 47801
-			`Re: count_val = 32'd20;        //  32'hA65D;        // 42589
-			`Mi: count_val = 32'd30;        //  32'h9430;        // 37936
-			`Fa: count_val = 32'd40;        //  32'h8BE9;        // 35817
-			`So: count_val = 32'd50;        //  32'h8453;        // 33875
-			`La: count_val = 32'd60;        //  32'h6EF9;        // 28409
-			`Ti: count_val =           32'h62F1;        // 25329
-			`Do2: count_val =          32'h5D5D;       // 23901
-			 default: count_val =      32'd10;   // 47801 (Do)
+			`Do: count_val = 32'hBAB9;        // 47801
+			`Re: count_val = 32'hA65D;        // 42589
+			`Mi: count_val = 32'h9430;        // 37936
+			`Fa: count_val = 32'h8BE9;        // 35817
+			`So: count_val = 32'h8453;        // 33875
+			`La: count_val = 32'h6EF9;        // 28409
+			`Ti: count_val = 32'h62F1;        // 25329
+			`Do2: count_val = 32'h5D5D;       // 23901
+			 default: count_val = 32'hBAB9;   // 47801 (Do)
 		endcase
 	end
 
