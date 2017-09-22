@@ -220,7 +220,7 @@ always_comb begin
 		3'b101: note_display = {character_L,character_lowercase_a};
 		3'b110: note_display = {character_T,character_lowercase_i};
 		3'b111: note_display = {character_D,character_lowercase_o,character_2};
-		default: segments = {character_D,character_o};
+		default: note_display = {character_D,character_lowercase_o};
 	endcase
 end
 
@@ -330,9 +330,9 @@ LCD_Scope_Encapsulated_pacoblaze_wrapper LCD_LED_scope(
                           .scope_channelB(scope_channelB), //don't touch
                           
                   //scope information generation
-		  // Lab 1 - Changed scope B to show the note being played
+		  // Lab 1 Part C- Changed scope B to show the note being played
                           .ScopeInfoA({character_1,character_K,character_H,character_lowercase_z}),
-                          .ScopeInfoB({character_S,character_W,character_1,character_space}),
+                          .ScopeInfoB(note_display),
                           
                  //enable_scope is used to freeze the scope just before capturing 
                  //the waveform for display (otherwise the sampling would be unreliable)
