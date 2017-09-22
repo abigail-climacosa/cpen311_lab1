@@ -207,8 +207,22 @@ top AUI(.clk(CLOCK_50), .reset(SW[0]),
         .switch_val(switch_val),.clk_out(Sample_Clk_Signal) );          
 
 
-
-
+// Lab 1 Part C - For LCD to display note
+wire [32:0] note_display;
+always_comb begin
+	case(switch_val)
+		//3 bit select       32 bit output
+		3'b000: note_display = {character_D,character_lowercase_o};
+		3'b001: note_display = {character_R,character_lowercase_e};
+		3'b010: note_display = {character_M,character_lowercase_e};
+		3'b011: note_display = {character_F,character_lowercase_a};
+		3'b100: note_display = {character_S,character_lowercase_o};
+		3'b101: note_display = {character_L,character_lowercase_a};
+		3'b110: note_display = {character_T,character_lowercase_i};
+		3'b111: note_display = {character_D,character_lowercase_o,character_2};
+		default: segments = {character_D,character_o};
+	endcase
+end
 
 
             
@@ -275,6 +289,9 @@ scope_capture LCD_scope_channelB
 .captured_data(scope_channelB),
 .reset(1'b1));
 
+
+
+
 assign LCD_ON   = 1'b1;
 //The LCD scope and display
 LCD_Scope_Encapsulated_pacoblaze_wrapper LCD_LED_scope(
@@ -313,6 +330,7 @@ LCD_Scope_Encapsulated_pacoblaze_wrapper LCD_LED_scope(
                           .scope_channelB(scope_channelB), //don't touch
                           
                   //scope information generation
+		  // Lab 1 - Changed scope B to show the note being played
                           .ScopeInfoA({character_1,character_K,character_H,character_lowercase_z}),
                           .ScopeInfoB({character_S,character_W,character_1,character_space}),
                           
