@@ -1,16 +1,49 @@
 //passing in the slower clk at top level eg. Basic_Organ_Solution
 module led_con(input logic clk,
-			   input logic reset,
 			   output logic [9:0] leds);
 
-`define MAX_LED  10'b1000000000 // 
-//logic [9:0] led_re;
+`define MAX_LED  10'b1000000000 
+`define COUNT_MAX 32'h9
+
+logic [9:0]leds_in = 10'b1;
+logic flag;
 
 
+/*
 always_ff @(posedge clk)
-	if(leds >= `MAX_LED ||reset)
-		leds <= 10'b1;
-	else
-		leds <= (leds << 1) ;
+	if(flag == 1'b1 )
+		leds_in <= (leds_in >> 1);
+	else 
+		leds_in <= (leds_in << 1);
+*/
+
+always_ff @(posedge clk)  
+	if(leds_in >= `MAX_LED && flag == 0 ) 
+	begin 
+			flag <= 1;
+			leds_in <= (leds_in >> 1);
+	end
+	else 
+		begin 
+			if(leds_in == 10'b1) 
+			begin 
+				flag <= 0;
+		        leds_in <= (leds_in << 1);
+			end
+			else 
+			    begin
+			    if(flag == 0) 
+			      begin 
+			    	 leds_in <= (leds_in << 1);
+			     	 flag <=flag;
+			      end
+			    else 	
+			      begin 
+			         leds_in <= (leds_in >> 1);
+			         flag <= flag;
+			      end	
+
+			    end
+		end 
+assign leds = leds_in;
 endmodule
-	
