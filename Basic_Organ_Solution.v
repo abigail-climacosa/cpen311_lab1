@@ -85,9 +85,9 @@ inout           [35:0]      GPIO_1;
 //=======================================================
 // Input and output declarations
 logic CLK_50M;
-logic  [7:0] LED;
+logic  [9:0] LED;
 assign CLK_50M =  CLOCK_50;
-assign LEDR[7:0] = LED[7:0];
+//assign LEDR[9:0] = LED[9:0];
 
 
 wire            [7:0]      LCD_DATA;
@@ -203,18 +203,21 @@ wire Sample_Clk_Signal;
 // audio output
 logic [2:0] switch_val;
 assign switch_val = SW[3:1];
-top AUI(.clk(CLOCK_50), .reset(SW[0]), 
+
+top AUI(.clk(CLOCK_50), .reset(~SW[0]), 
         .switch_val(switch_val),.clk_out(Sample_Clk_Signal) );          
 
 
+
+
 // Lab 1 Part C - For LCD to display note
-wire [32:0] note_display;
+wire [23:0] note_display;
 always_comb begin
 	case(switch_val)
-		//3 bit select       32 bit output
+		//3 bit select       24 bit output
 		3'b000: note_display = {character_D,character_lowercase_o};
 		3'b001: note_display = {character_R,character_lowercase_e};
-		3'b010: note_display = {character_M,character_lowercase_e};
+		3'b010: note_display = {character_M,character_lowercase_i};
 		3'b011: note_display = {character_F,character_lowercase_a};
 		3'b100: note_display = {character_S,character_lowercase_o};
 		3'b101: note_display = {character_L,character_lowercase_a};
@@ -224,10 +227,11 @@ always_comb begin
 	endcase
 end
 
+//Lab 1 Part D - For 1Hz LED rotating
+//get a 1Hz clock
+`define COUNT_1HZ 32'h17D7840
+led_top LEDS(.clk(CLOCK_50), .reset(~SW[0]), .count_va(`COUNT_1HZ), .led_light(LEDR));
 
-            
-//put the clk_out here
-//assign Sample_Clk_Signal = Clock_1KHz;
 
 //Audio Generation Signal
 //Note that the audio needs signed data - so convert 1 bit to 8 bits signed
@@ -301,43 +305,36 @@ LCD_Scope_Encapsulated_pacoblaze_wrapper LCD_LED_scope(
                     .lcd_rw(LCD_RW), //don't touch
                     .lcd_e(LCD_EN), //don't touch
                     .clk(CLK_50M),  //don't touch
-                          
-                        //LCD Display values
-                      .InH(8'hAA),
-                      .InG(8'hBB),
-                      .InF(8'h01),
-                       .InE(8'h23),
-                      .InD(8'h45),
-                      .InC(8'h67),
-                      .InB(8'h89),
-                     .InA(8'h00),
-                          
+						  //LCD Display values
+                    .InH({character_S,character_W}),
+                    .InG({character_colon,switch_val[2]}),
+                    .InF({switch_val[1:0]}),
+                    .InE({character_space,character_A}),
+                    .InD({character_lowercase_u,character_lowercase_d}),
+                    .InC({character_lowercase_i,character_O}),
+                    .InB({character_colon,character_space}),
+                    .InA({audio_data}),
                      //LCD display information signals
-                         .InfoH({character_A,character_U}),
-                          .InfoG({character_S,character_W}),
-                          .InfoF({character_space,character_A}),
-                          .InfoE({character_N,character_space}),
-                          .InfoD({character_E,character_X}),
-                          .InfoC({character_A,character_M}),
-                          .InfoB({character_P,character_L}),
-                          .InfoA({character_E,character_exclaim}),
-                          
+                     .InfoH({character_S,character_M}),
+                     .InfoG({character_T,character_H}),
+                     .InfoF({character_N,character_space}),
+                     .InfoE({character_I,character_N}),
+                     .InfoD({character_T,character_R}),
+                     .InfoC({character_S,character_T}),
+                     .InfoB({character_N,character_G}),
+                     .InfoA({character_exclaim,character_exclaim}),                          
                   //choose to display the values or the oscilloscope
-                          .choose_scope_or_LCD(choose_LCD_or_SCOPE),
-                          
+                          .choose_scope_or_LCD(choose_LCD_or_SCOPE),                          
                   //scope channel declarations
                           .scope_channelA(scope_channelA), //don't touch
-                          .scope_channelB(scope_channelB), //don't touch
-                          
+                          .scope_channelB(scope_channelB), //don't touch                          
                   //scope information generation
 		  // Lab 1 Part C- Changed scope B to show the note being played
-                          .ScopeInfoA({character_1,character_K,character_H,character_lowercase_z}),
-                          .ScopeInfoB(note_display),
-                          
+                          .ScopeInfoA(note_display),
+                          .ScopeInfoB(note_display),                          
                  //enable_scope is used to freeze the scope just before capturing 
                  //the waveform for display (otherwise the sampling would be unreliable)
-                          .enable_scope(allow_run_LCD_scope) //don't touch
-                          
+                          .enable_scope(allow_run_LCD_scope) //don't touch                          
     );  
     
 
