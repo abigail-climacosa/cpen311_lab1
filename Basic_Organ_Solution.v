@@ -276,7 +276,7 @@ Generate_LCD_scope_Clk(
 (* keep = 1, preserve = 1 *) logic ScopeChannelBSignal;
 
 assign ScopeChannelASignal = Sample_Clk_Signal;
-assign ScopeChannelBSignal = SW[1];
+assign ScopeChannelBSignal = SW[3:1];
 
 scope_capture LCD_scope_channelA(
 .clk(scope_clk),
@@ -306,14 +306,14 @@ LCD_Scope_Encapsulated_pacoblaze_wrapper LCD_LED_scope(
                     .lcd_e(LCD_EN), //don't touch
                     .clk(CLK_50M),  //don't touch
 						  //LCD Display values
-                    .InH({character_S,character_W}),
-                    .InG({character_colon,switch_val[2]}),
-                    .InF({switch_val[1:0]}),
-                    .InE({character_space,character_A}),
-                    .InD({character_lowercase_u,character_lowercase_d}),
-                    .InC({character_lowercase_i,character_O}),
-                    .InB({character_colon,character_space}),
-                    .InA({audio_data}),
+                    .InH({13'b0,SW[3:1]}),
+                    .InG({16'b0}),
+                    .InF({16'b0}),
+                    .InE({16'b0}),
+                    .InD({16'b0}),
+                    .InC({16'b0}),
+                    .InB({16'b0}),
+                    .InA({8'b0,audio_data}),
                      //LCD display information signals
                      .InfoH({character_S,character_M}),
                      .InfoG({character_T,character_H}),
