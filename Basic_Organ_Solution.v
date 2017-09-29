@@ -204,11 +204,9 @@ wire Sample_Clk_Signal;
 logic [2:0] switch_val;
 assign switch_val = SW[3:1];
 
+// different clock generator module
 top AUI(.clk(CLOCK_50), .reset(~SW[0]), 
         .switch_val(switch_val),.clk_out(Sample_Clk_Signal) );          
-
-
-
 
 // Lab 1 Part C - For LCD to display note
 wire [23:0] note_display;
@@ -276,6 +274,7 @@ Generate_LCD_scope_Clk(
 (* keep = 1, preserve = 1 *) logic ScopeChannelBSignal;
 
 assign ScopeChannelASignal = Sample_Clk_Signal;
+//update
 assign ScopeChannelBSignal = SW[3:1];
 
 scope_capture LCD_scope_channelA(
@@ -306,6 +305,14 @@ LCD_Scope_Encapsulated_pacoblaze_wrapper LCD_LED_scope(
                     .lcd_e(LCD_EN), //don't touch
                     .clk(CLK_50M),  //don't touch
 						  //LCD Display values
+//                    .InH({character_S,character_W}),
+//                    .InG({character_colon,switch_val[2]}),
+//                    .InF({switch_val[1:0]}),
+//                    .InE({character_space,character_A}),
+//                    .InD({character_lowercase_u,character_lowercase_d}),
+//                    .InC({character_lowercase_i,character_O}),
+//                    .InB({character_colon,character_space}),
+//                    .InA({audio_data}),
                     .InH({13'b0,SW[3:1]}),
                     .InG({16'b0}),
                     .InF({16'b0}),

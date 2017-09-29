@@ -1,4 +1,5 @@
 //passing in the slower clk at top level eg. Basic_Organ_Solution
+//led module : the led will light side by side
 module led_con(input logic clk,
 			   output logic [9:0] leds);
 
@@ -16,7 +17,9 @@ always_ff @(posedge clk)
 	else 
 		leds_in <= (leds_in << 1);
 */
-
+// the flag remembers previous stage 
+//  flag 0 going left
+// flag 1 going right 
 always_ff @(posedge clk)  
 	if(leds_in >= `MAX_LED && flag == 0 ) 
 	begin 

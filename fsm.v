@@ -1,4 +1,4 @@
-
+// an N bit register
 module fsm(clk, in, out);
 
 	// inputs and outputs - NOTE: will rename in and out later
